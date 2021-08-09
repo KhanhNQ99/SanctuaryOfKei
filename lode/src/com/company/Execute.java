@@ -12,7 +12,7 @@ public class Execute {
         while (!check) {
             try {
                 n = input.nextInt();
-                if (n > 100) {
+                if (n >= 100) {
                     check = true;
                     System.out.println("Your lottery is: " + (n %= 100));
                 } else {
@@ -29,18 +29,18 @@ public class Execute {
 
     public void giailode2(){
         Integer n;
-        int n2;
+        Integer n2;
         Scanner input = new Scanner(System.in);
         boolean check = false;
         System.out.print("Input value: ");
         while (!check) {
             try {
                 n = input.nextInt();
-                if (n > 100) {
+                if (n >= 100) {
                     check = true;
                     n2 = n/100;
                     n = n - n2*100;
-                    System.out.println(n);
+                    System.out.println("Your lottery is: " + n);
                 } else {
                     System.out.println("retype cuz you input <100");
                     System.out.print("Retype: " + input.nextLine());
