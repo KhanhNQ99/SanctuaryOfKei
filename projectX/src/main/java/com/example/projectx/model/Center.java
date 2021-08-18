@@ -16,7 +16,7 @@ public class Center implements Serializable {
     private Long idcenter;
 
     @Column(name = "centername")
-    private String name;
+    private String centername;
 
     @Column(name = "freshercount")
     private int freshercount;
@@ -25,8 +25,13 @@ public class Center implements Serializable {
     }
 
     public Center(String name) {
-        this.name = name;
+        this.centername = name;
+    }
 
+    public Center(Long idcenter, String centername, int freshercount) {
+        this.idcenter = idcenter;
+        this.centername = centername;
+        this.freshercount = freshercount;
     }
 
     public static long getSerialVersionUID() {
@@ -42,11 +47,11 @@ public class Center implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return centername;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.centername = name;
     }
 
     public int getFreshercount() {
@@ -60,8 +65,8 @@ public class Center implements Serializable {
     @Override
     public String toString() {
         return "Center{" +
-                "id=" + idcenter +
-                ", name='" + name + '\'' +
+                "idcenter=" + idcenter +
+                ", centername='" + centername + '\'' +
                 ", freshercount=" + freshercount +
                 '}';
     }

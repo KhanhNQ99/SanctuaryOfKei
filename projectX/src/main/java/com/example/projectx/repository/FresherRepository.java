@@ -20,4 +20,14 @@ public interface FresherRepository extends JpaRepository<Fresher, Long> {
 
     @Query("SELECT e FROM Fresher e WHERE e.email = ?1")
     List<Fresher> findFresherByEmail(String email);
+
+    @Query("SELECT e FROM Fresher e WHERE e.idcenter = ?1")
+    List<Fresher> findFresherByIdcenter(int id);
+
+    @Query("SELECT e FROM Fresher e WHERE e.name =?1")
+    Fresher findByName(String name);
+
+    @Query("select count(v) as cnt, v.average from Fresher v group by v.average ")
+    public List<?> findStatistic();
+
 }

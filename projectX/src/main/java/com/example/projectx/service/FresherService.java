@@ -3,16 +3,26 @@ package com.example.projectx.service;
 import com.example.projectx.model.Fresher;
 import com.example.projectx.repository.FresherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+@Transactional
 @Service
-public class FresherService {
+public class FresherService implements UserDetailsService {
 
     @Autowired
     public FresherRepository fresherRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        return null;
+    }
 
     public List<Fresher> listAllFresher() {
         return fresherRepository.findAll();
@@ -29,6 +39,15 @@ public class FresherService {
             throw new IllegalStateException("Id taken");
         }
         fresherRepository.save(fresher);
+    }
+
+    public Optional findFresherByIdcenter(int idcenter) {
+        List<Fresher> fresherOptional = fresherRepository
+                .findFresherByIdcenter(idcenter);
+        if (fresherOptional.isEmpty()) {
+            throw new IllegalStateException("No fresher name like this ");
+        }
+        return Optional.of(fresherRepository.findFresherByIdcenter(idcenter));
     }
 
     public Optional findFresherByName(String name) {
@@ -81,4 +100,10 @@ public class FresherService {
     public Fresher getId(Long id) {
         return fresherRepository.findById(id).get();
     }
+
+    public List<?> findStatistic() {
+        return fresherRepository.findStatistic();
+    }
+
+
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RequestMapping("/center")
 @RestController
 public class CenterController {
@@ -22,18 +23,16 @@ public class CenterController {
     private FresherService fservice;
 
     @GetMapping
-//    @PreAuthorize("hasAnyRole('ADMIN','ADMINTRAINEE','STUDENT')")
     public ResponseEntity<List<Center>> listAll() {
         try {
             System.out.println(cservice.listAllCenter());
             return ResponseEntity.ok().body(cservice.listAllCenter());
         } catch (Exception e) {
-            throw new RequestException("Oops cannot get all user with custom exception");
+            throw new RequestException("Oops cannot get all Center with custom exception");
         }
     }
 
     @GetMapping("/count")
-//    @PreAuthorize("hasAnyRole('ADMIN','ADMINTRAINEE','STUDENT')")
     public ResponseEntity countFresher() {
         try {
             System.out.println("User count: " + cservice.countCenter());
@@ -44,7 +43,6 @@ public class CenterController {
     }
 
     @GetMapping("/{id}")
-//    @PreAuthorize("hasAnyRole('ADMIN','ADMINTRAINEE')")
     public ResponseEntity<Center> getFresherrById(@PathVariable Long id) {
         try {
             System.out.println("ID " + id + ": ");
@@ -55,7 +53,6 @@ public class CenterController {
     }
 
     @GetMapping("/findbyname/{name}")
-//    @PreAuthorize("hasAnyRole('ADMIN','ADMINTRAINEE')")
     public ResponseEntity getFresherByName(@PathVariable String name) {
         try {
             System.out.println("ID " + name + ": ");
@@ -67,8 +64,6 @@ public class CenterController {
     }
 
     @PostMapping
-//    @PreAuthorize("hasAnyRole('ADMIN','ADMINTRAINEE')")
-//    @PreAuthorize("HasAuthority('student:write')")
     public ResponseEntity registerNewCenter(@RequestBody Center center) {
         try {
             System.out.println("Adding " + center);
@@ -80,8 +75,6 @@ public class CenterController {
     }
 
     @DeleteMapping("/{id}")
-//    @PreAuthorize("HasAuthority('student:write')")
-//    @PreAuthorize("hasAnyRole('ADMIN','ADMINTRAINEE')")
     public ResponseEntity delete(@PathVariable Long id) {
         try {
             System.out.println("ID= " + id + " is deleted");
@@ -93,8 +86,6 @@ public class CenterController {
     }
 
     @PutMapping("/{id}")
-//    @PreAuthorize("HasAuthority('student:write')")
-//    @PreAuthorize("hasAnyRole('ADMIN','ADMINTRAINEE')")
     public ResponseEntity<Center> update(@RequestBody Center center, @PathVariable long id) {
         try {
             cservice.Update(center, id);
@@ -104,8 +95,7 @@ public class CenterController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/findbyidcenter/{idcenter}")
-//    @PreAuthorize("hasAnyRole('ADMIN','ADMINTRAINEE')")
+    @GetMapping("/countfresher/{idcenter}")
     public ResponseEntity getFresherByIdCenter(@PathVariable int idcenter) {
         try {
             long a = cservice.countFresherByIdCenter(idcenter);

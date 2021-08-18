@@ -51,6 +51,13 @@ public class Fresher implements Serializable {
         this.centername = centername;
     }
 
+    public Fresher(int idcenter, int score1, int score2, int score3, float average) {
+        this.idcenter = idcenter;
+        this.score1 = score1;
+        this.score2 = score2;
+        this.score3 = score3;
+        this.average = average;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -128,15 +135,9 @@ public class Fresher implements Serializable {
         this.score3 = score3;
     }
 
-    public float getAverage() {
-        if (score1 != 0 && score2 != 0 && score3 != 0)
-            average = (score1 + score2 + score3) / 3;
-        return average;
-    }
+    public float getAverage() { return average;}
 
-    public void setAverage(float average) {
-        this.average = average;
-    }
+    public void setAverage(float average) { this.average = average; }
 
     @Override
     public String toString() {

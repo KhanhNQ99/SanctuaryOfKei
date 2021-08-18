@@ -5,9 +5,11 @@ import com.example.projectx.repository.CenterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+@Transactional
 @Service
 public class CenterService {
 
@@ -24,7 +26,7 @@ public class CenterService {
 
     public void addCenter(Center center) {
         Optional<Center> centerOptional = centerRepository
-                .findCenterById(center.getId());
+                .findCenterByIdcenter(center.getId());
         if (centerOptional.isPresent()) {
             throw new IllegalStateException("Id taken");
         }
@@ -50,7 +52,7 @@ public class CenterService {
         centerRepository.deleteById(id);
     }
 
-    public void Update(Center center, Long idcenter){
+    public void Update(Center center, Long idcenter) {
         Optional<Center> centerOptional = centerRepository.findById(idcenter);
         if (!centerOptional.isPresent())
             throw new IllegalStateException("Name taken");

@@ -6,21 +6,22 @@ import com.example.projectx.service.FresherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
-@RequestMapping("/fresher")
+//import org.springframework.security.access.prepost.PreAuthorize;
+
+@Transactional
 @RestController
+@RequestMapping("/fresher")
 public class FresherController {
 
     @Autowired
     private FresherService fservice;
 
     @GetMapping
-//    @PreAuthorize("hasAnyRole('ADMIN','ADMINTRAINEE','STUDENT')")
     public ResponseEntity<List<Fresher>> listAll() {
         try {
             System.out.println(fservice.listAllFresher());
@@ -31,7 +32,6 @@ public class FresherController {
     }
 
     @GetMapping("/count")
-//    @PreAuthorize("hasAnyRole('ADMIN','ADMINTRAINEE','STUDENT')")
     public ResponseEntity countFresher() {
         try {
             System.out.println("User count: " + fservice.countFresher());
@@ -41,19 +41,37 @@ public class FresherController {
         }
     }
 
+    @GetMapping("/findstatistic")
+    public ResponseEntity findstatistic() {
+        try {
+            return ResponseEntity.ok().body(fservice.findStatistic());
+        } catch (Exception e) {
+            throw new RequestException("Oops oh no");
+        }
+    }
+
     @GetMapping("/{id}")
-//    @PreAuthorize("hasAnyRole('ADMIN','ADMINTRAINEE')")
-    public ResponseEntity<Fresher> getFresherrById(@PathVariable Long id) {
+    public ResponseEntity<Fresher> getFresherById(@PathVariable Long id) {
         try {
             System.out.println("ID " + id + ": ");
             return ResponseEntity.status(HttpStatus.OK).body(fservice.getId(id));
         } catch (Exception ex) {
-            throw new RequestException("Oops cannot get user with custom exception");
+            throw new RequestException("Oops cannot get fresher with id input");
+        }
+    }
+
+    @GetMapping("/findbyidcenter/{idcenter}")
+    public ResponseEntity GetFresherByIdcenter(@PathVariable int idcenter) {
+        try{
+            System.out.println("ID: " + idcenter + ": ");
+            System.out.println(fservice.findFresherByIdcenter(idcenter));
+            return ResponseEntity.status(HttpStatus.OK).body(fservice.findFresherByIdcenter(idcenter));
+        }catch (Exception ex) {
+            throw new RequestException("Oops cannot get fresher with idcenter input");
         }
     }
 
     @GetMapping("/findbyname/{name}")
-//    @PreAuthorize("hasAnyRole('ADMIN','ADMINTRAINEE')")
     public ResponseEntity getFresherByName(@PathVariable String name) {
         try {
             System.out.println("ID " + name + ": ");
@@ -65,7 +83,6 @@ public class FresherController {
     }
 
     @GetMapping("/findbylang/{lang}")
-//    @PreAuthorize("hasAnyRole('ADMIN','ADMINTRAINEE')")
     public ResponseEntity getFresherByLang(@PathVariable String lang) {
         try {
             System.out.println("Lang: " + lang + ": ");
@@ -77,7 +94,6 @@ public class FresherController {
     }
 
     @GetMapping("/findbyemail/{email}")
-//    @PreAuthorize("hasAnyRole('ADMIN','ADMINTRAINEE')")
     public ResponseEntity getFresherByEmail(@PathVariable String email) {
         try {
             System.out.println("Email: " + email + ": ");
@@ -89,17 +105,13 @@ public class FresherController {
     }
 
     @PostMapping
-//    @PreAuthorize("hasAnyRole('ADMIN','ADMINTRAINEE')")
-//    @PreAuthorize("HasAuthority('student:write')")
     public ResponseEntity registerNewFresher(@RequestBody Fresher fresher) {
         try {
             System.out.println("Adding " + fresher);
-            fservice.addFresher(fresher);
             if(fresher.getScore1() != 0 && fresher.getScore2() != 0 && fresher.getScore3() != 0) {
-                fresher.getAverage();
-//                service.sumAverage();
+                fresher.setAverage((float)(fresher.getScore1() + fresher.getScore2() + fresher.getScore3())/3);
             }
-            fservice.fresherRepository.save(fresher);
+            fservice.addFresher(fresher);
         } catch (Exception ex) {
             throw new RequestException("Oops cannot get all students with custom exception");
         }
@@ -107,8 +119,6 @@ public class FresherController {
     }
 
     @DeleteMapping("/{id}")
-//    @PreAuthorize("HasAuthority('student:write')")
-//    @PreAuthorize("hasAnyRole('ADMIN','ADMINTRAINEE')")
     public ResponseEntity delete(@PathVariable Long id) {
         try {
             System.out.println("ID= " + id + " is deleted");
@@ -120,16 +130,12 @@ public class FresherController {
     }
 
     @PutMapping("/{id}")
-//    @PreAuthorize("HasAuthority('student:write')")
-//    @PreAuthorize("hasAnyRole('ADMIN','ADMINTRAINEE')")
     public ResponseEntity<Fresher> update(@RequestBody Fresher fresher, @PathVariable Long id) {
         try {
-            fservice.Update(fresher, id);
             if(fresher.getScore1() != 0 && fresher.getScore2() != 0 && fresher.getScore3() != 0) {
-                fresher.getAverage();
-//                service.sumAverage();
+                fresher.setAverage((float)(fresher.getScore1() + fresher.getScore2() + fresher.getScore3())/3);
             }
-            fservice.fresherRepository.save(fresher);
+            fservice.Update(fresher, id);
         } catch (Exception ex) {
             throw new RequestException("Oops cannot update user with custom exception");
         }
